@@ -2,11 +2,11 @@ import { motion } from 'framer-motion'
 import { MapPin, Navigation, Clock, Building2, Truck } from 'lucide-react'
 import { business, mapEmbedUrl, mapDirectionsUrl } from '../config/business'
 
-const zones = ['Piura Centro', 'San Isidro', 'Miraflores', 'La Urbina', 'Tambo', 'Los Pinos', 'Bellavista', 'Santa Rosa']
+const zones = ['Piura Centro', 'Castilla', 'Paita', 'Sullana', 'catacaos', 'La unión']
 
 const items = [
   { icon: Building2, label: 'Cobertura', value: business.coverage },
-  { icon: Truck, label: 'Traslado', value: 'Sin costo dentro de la ciudad' },
+  { icon: Truck, label: 'Traslado', value: 'Sujeto a evaluzación' },
   { icon: Clock, label: 'Atención', value: business.hours },
 ]
 

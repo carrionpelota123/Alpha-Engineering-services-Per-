@@ -118,8 +118,7 @@ export function Contact() {
                   <div>
                     <p className="text-[15px] font-medium text-white">WhatsApp</p>
                     <p className="text-sm leading-relaxed text-slate-400">
-                      Envía tu solicitud y te llevamos directo al chat con el mensaje ya escrito. Nuestro
-                      número no se muestra en la web.
+                      Envía tu solicitud y te llevamos directo al chat con el mensaje ya escrito.
                     </p>
                   </div>
                 </li>
