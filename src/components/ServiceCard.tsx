@@ -58,30 +58,26 @@ export function ServiceCard({ service, open, onToggle }: ServiceCardProps) {
         onClick={onToggle}
         aria-expanded={open}
         aria-controls={panelId}
-        className="flex flex-1 flex-col gap-4 rounded-2xl p-6 text-left"
+        className="flex w-full flex-1 items-start gap-3.5 rounded-2xl p-5 text-left"
       >
-        <div className="flex items-start justify-between gap-3">
-          <span
-            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border ${groupTone[service.group]}`}
-          >
-            <ServiceGlyph icon={service.icon} className="h-5 w-5" />
-          </span>
-          <span
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-edge/70 bg-white/[0.04] text-slate-400 transition group-hover:border-cyan/40 group-hover:text-cyan"
-            aria-hidden
-          >
-            <Plus className={`h-4 w-4 transition-transform duration-300 ${open ? 'rotate-45' : ''}`} />
-          </span>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-semibold leading-tight text-white">{service.title}</h3>
-          <p className="mt-2 text-[14.5px] leading-relaxed text-slate-400">{service.desc}</p>
-        </div>
-
-        <span className="mt-auto pt-1 text-[13px] font-medium text-cyan">
-          {open ? 'Ocultar' : 'Ver qué incluye'}
+        <span
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${groupTone[service.group]}`}
+        >
+          <ServiceGlyph icon={service.icon} className="h-5 w-5" />
         </span>
+
+        <div className="min-w-0 flex-1">
+          <div className="flex items-start justify-between gap-3">
+            <h3 className="text-[15.5px] font-semibold leading-snug text-white">{service.title}</h3>
+            <span
+              className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-edge/70 bg-white/[0.04] text-slate-400 transition group-hover:border-cyan/40 group-hover:text-cyan"
+              aria-hidden
+            >
+              <Plus className={`h-3.5 w-3.5 transition-transform duration-300 ${open ? 'rotate-45' : ''}`} />
+            </span>
+          </div>
+          <p className="mt-1.5 text-[13.5px] leading-relaxed text-slate-400">{service.desc}</p>
+        </div>
       </button>
 
       <AnimatePresence initial={false}>
@@ -95,7 +91,7 @@ export function ServiceCard({ service, open, onToggle }: ServiceCardProps) {
             transition={{ duration: DURATION, ease: EASE }}
             className="overflow-hidden"
           >
-            <ul className="space-y-2 border-t border-edge/60 px-6 pb-4 pt-3.5">
+            <ul className="space-y-2 border-t border-edge/60 px-5 pb-4 pt-3.5">
               {service.details.map((d) => (
                 <li key={d} className="flex items-start gap-2.5 text-[13.5px] leading-snug text-slate-300">
                   <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-volt" />
@@ -104,7 +100,7 @@ export function ServiceCard({ service, open, onToggle }: ServiceCardProps) {
               ))}
             </ul>
 
-            <div className="px-6 pb-5">
+            <div className="px-5 pb-5">
               <button
                 type="button"
                 onClick={() => startWaChat((owner) => buildWaQuickQuote(owner, service.title))}

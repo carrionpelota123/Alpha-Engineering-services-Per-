@@ -28,6 +28,15 @@ export const groupLabels: Record<ServiceGroup, string> = {
   industrial: 'Ingeniería industrial y servicios generales',
 }
 
+/**
+ * Etiquetas cortas para las pestañas. groupLabels es demasiado largo y parte
+ * la barra de filtros en dos lineas, dejando sucio el encabezado.
+ */
+export const groupTabs: Record<ServiceGroup, string> = {
+  tecnologia: 'Tecnología',
+  industrial: 'Ingeniería industrial',
+}
+
 export const groupHints: Record<ServiceGroup, string> = {
   tecnologia: 'Todo lo que mantiene tu equipo y tu red funcionando.',
   industrial: 'Lo que hace que tu planta, taller, casa o negocio funcione y sea seguro.',

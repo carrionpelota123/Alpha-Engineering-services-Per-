@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { services, groupLabels, groupHints } from '../data/services'
+import { services, groupLabels, groupHints, groupTabs } from '../data/services'
 import type { ServiceGroup } from '../data/services'
 import { ServiceCard } from './ServiceCard'
 import { startWaChat } from '../config/business'
@@ -56,7 +56,7 @@ export function Services() {
                     : 'border-edge/70 bg-white/[0.03] text-slate-400 hover:border-slate-500 hover:text-slate-200'
                 }`}
               >
-                {groupLabels[g]}
+                {groupTabs[g]}
                 <span className="ml-2 font-mono text-[11px] opacity-70">
                   {services.filter((s) => s.group === g).length}
                 </span>
