@@ -18,8 +18,7 @@ export function Coverage() {
         <div className="mx-auto max-w-2xl text-center">
           <span className="eyebrow">Cobertura</span>
           <h2 className="title mt-3">Damos servicio en toda la zona</h2>
-          <p className="lede mt-4 text-balance">
-            Cubrimos todo Piura sin costo de traslado. Si estás fuera de la ciudad, cotizamos los viáticos
+          <p className="lede mt-4 text-balance">Cubrimos todo Piura.Cotizamos los viáticos
             antes de salir y te lo confirmamos.
           </p>
         </div>
