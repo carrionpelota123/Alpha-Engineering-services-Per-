@@ -8,10 +8,7 @@ const item = fadeUp
 
 export function About() {
   return (
-    <section
-      id="nosotros"
-      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden py-20 sm:py-24"
-    >
+    <section id="nosotros" className="relative overflow-hidden py-14 sm:py-16">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent" />
       <div className="shell relative">
         <div className="grid items-center gap-10 lg:grid-cols-[1.12fr_0.88fr] lg:gap-12">

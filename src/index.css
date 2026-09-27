@@ -39,14 +39,16 @@
   }
 
   /*
-   * Scroll snapping por apartados. Cada section es un punto de parada, asi al
-   * bajar con el mouse la vista se acomoda completa en un apartado y nunca
-   * queda a medio corte entre dos.
+   * Scroll snapping por apartados. Al bajar con el mouse la vista se acomoda
+   * en un apartado completo en vez de quedar a medio corte entre dos.
    *
-   * Solo en escritorio: en el celular molestar, porque las secciones altas
-   * (Servicios) obligan a好几个 scrolls y el snapping pelea con el dedo.
-   * Se usa proximity en vez de mandatory para que una section mas alta que la
-   * pantalla no atrape al usuario y lo devuelva al inicio una y otra vez.
+   * Solo en escritorio: en el celular molesta, porque el dedo y el snapping
+   * pelean por el control del scroll.
+   *
+   * Proximity en vez de mandatory, para que un apartado mas alto que la pantalla
+   * (Servicios) no atrape al usuario y lo devuelva al inicio una y otra vez.
+   * Y sin scroll-snap-stop: always, para que un solo arrastre pase varios
+   * apartados y no obligue a detenerse en cada uno.
    */
   @media (min-width: 768px) {
     html {
@@ -55,7 +57,6 @@
 
     main > section {
       scroll-snap-align: start;
-      scroll-snap-stop: always;
       /* Compensa la barra fija para que el titulo no quede debajo. */
       scroll-margin-top: 68px;
     }
