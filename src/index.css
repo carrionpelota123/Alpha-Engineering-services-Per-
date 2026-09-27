@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-void font-sans text-slate-300 antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    @apply bg-cyan/30 text-white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-deep;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-edge;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-cyan-dim;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .glass {
+    @apply border border-edge/70 bg-panel/60 backdrop-blur-xl;
+  }
+
+  .eyebrow {
+    @apply font-mono text-[11px] font-medium uppercase tracking-[0.32em] text-cyan;
+  }
+
+  .title {
+    @apply text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl;
+  }
+
+  .lede {
+    @apply text-base leading-relaxed text-slate-400 sm:text-lg;
+  }
+
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-void;
+  }
+
+  .btn-primary {
+    @apply btn bg-cyan text-void hover:shadow-[0_0_38px_-6px_rgba(34,211,238,0.75)] hover:brightness-110;
+  }
+
+  .btn-ghost {
+    @apply btn border border-edge bg-white/[0.03] text-slate-200 hover:border-cyan/60 hover:bg-cyan/[0.07] hover:text-white;
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(34, 211, 238, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(34, 211, 238, 0.07) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .glow-text {
+    @apply bg-gradient-to-r from-cyan via-cyan-soft to-volt bg-clip-text text-transparent;
+  }
+
+  .card-hover {
+    @apply transition-all duration-500 hover:-translate-y-1.5 hover:border-cyan/50 hover:bg-panel/90;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .mask-fade-y {
+    mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+  }
+  .mask-fade-x {
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+}
