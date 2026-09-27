@@ -26,7 +26,10 @@ export function Services() {
     setOpenTitle((current) => (current === title ? null : title))
 
   return (
-    <section id="servicios" className="relative overflow-hidden py-20 sm:py-24">
+    <section
+      id="servicios"
+      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden py-20 sm:py-24"
+    >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan/40 to-transparent" />
       <div className="shell relative">
         <div className="mx-auto max-w-2xl text-center">

@@ -9,7 +9,10 @@ const item = fadeUp
 
 export function Sectors() {
   return (
-    <section className="relative overflow-hidden py-20 sm:py-24">
+    <section
+      id="sectores"
+      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden py-20 sm:py-24"
+    >
       <div className="shell relative">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="eyebrow">Sectores</span>
