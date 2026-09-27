@@ -15,8 +15,8 @@ const issues = [
 
 export function Hero() {
   return (
-    <section id="top" className="relative flex min-h-[100svh] items-center overflow-hidden pt-[68px]">
-      <div className="shell py-16 sm:py-20">
+    <section id="top" className="relative flex min-h-[86svh] items-start overflow-hidden pt-[68px]">
+      <div className="shell w-full py-10 sm:py-14">
         <div className="mx-auto max-w-3xl text-center">
           <Reveal delay={0} className="flex justify-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-cyan/30 bg-cyan/[0.07] px-3.5 py-1.5">
