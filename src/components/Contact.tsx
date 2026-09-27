@@ -17,20 +17,8 @@ type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 type Fields = {
   nombre: string
-  telefono: string
-  zona: string
   servicio: string
-  momento: string
-  mensaje: string
 }
-
-const momentos = [
-  'Lo antes posible',
-  'Hoy en la mañana',
-  'Hoy en la tarde',
-  'Mañana por la mañana',
-  'La próxima semana',
-]
 
 export function Contact() {
   const [status, setStatus] = useState<Status>('idle')
@@ -60,11 +48,7 @@ export function Contact() {
 
     const fields: Fields = {
       nombre: String(data.get('nombre') ?? '').trim(),
-      telefono: String(data.get('telefono') ?? '').trim(),
-      zona: String(data.get('zona') ?? '').trim(),
       servicio: String(data.get('servicio') ?? '').trim(),
-      momento: String(data.get('momento') ?? '').trim(),
-      mensaje: String(data.get('mensaje') ?? '').trim(),
     }
 
     // Sin correo configurado: se abre el chat con el mensaje ya escrito
@@ -202,105 +186,47 @@ export function Contact() {
                 </div>
               )}
 
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="nombre" className="text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
-                    Nombre
-                  </label>
-                  <input
-                    id="nombre"
-                    name="nombre"
-                    required
-                    autoComplete="name"
-                    placeholder="Tu nombre completo"
-                    className="w-full rounded-xl border border-edge bg-white/[0.03] px-4 py-3 text-[15px] text-white placeholder:text-slate-500 outline-none transition-colors focus:border-cyan/60 focus:bg-white/[0.06]"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="telefono" className="text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
-                    Teléfono / WhatsApp
-                  </label>
-                  <input
-                    id="telefono"
-                    name="telefono"
-                    required
-                    autoComplete="tel"
-                    placeholder="55 1234 5678"
-                    className="w-full rounded-xl border border-edge bg-white/[0.03] px-4 py-3 text-[15px] text-white placeholder:text-slate-500 outline-none transition-colors focus:border-cyan/60 focus:bg-white/[0.06]"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="zona" className="text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
-                    Zona del trabajo
-                  </label>
-                  <input
-                    id="zona"
-                    name="zona"
-                    placeholder="Ej. Av. Bolognesi con Los Ejercicios"
-                    className="w-full rounded-xl border border-edge bg-white/[0.03] px-4 py-3 text-[15px] text-white placeholder:text-slate-500 outline-none transition-colors focus:border-cyan/60 focus:bg-white/[0.06]"
-                  />
-                </div>
-              </div>
-
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="servicio" className="text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
-                    Servicio de interés
-                  </label>
-                  <select
-                    ref={serviceRef}
-                    id="servicio"
-                    name="servicio"
-                    defaultValue=""
-                    className="w-full appearance-none rounded-xl border border-edge bg-white/[0.03] px-4 py-3 text-[15px] text-white outline-none transition-colors focus:border-cyan/60 focus:bg-white/[0.06]"
-                  >
-                    <option value="" className="bg-panel">
-                      Elige un servicio (opcional)
-                    </option>
-                    {serviceOptions.map((opt) => (
-                      <option key={opt} value={opt} className="bg-panel">
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="momento" className="text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
-                    ¿Cuándo te conviene?
-                  </label>
-                  <select
-                    id="momento"
-                    name="momento"
-                    defaultValue="Lo antes posible"
-                    className="w-full appearance-none rounded-xl border border-edge bg-white/[0.03] px-4 py-3 text-[15px] text-white outline-none transition-colors focus:border-cyan/60 focus:bg-white/[0.06]"
-                  >
-                    {momentos.map((m) => (
-                      <option key={m} value={m} className="bg-panel">
-                        {m}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="nombre" className="text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
+                  Tu nombre
+                </label>
+                <input
+                  id="nombre"
+                  name="nombre"
+                  required
+                  autoComplete="name"
+                  placeholder="Escribe tu nombre"
+                  className="w-full rounded-xl border border-edge bg-white/[0.03] px-4 py-3 text-[15px] text-white placeholder:text-slate-500 outline-none transition-colors focus:border-cyan/60 focus:bg-white/[0.06]"
+                />
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="mensaje" className="text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
-                  Mensaje
+                <label htmlFor="servicio" className="text-xs font-medium uppercase tracking-[0.16em] text-slate-400">
+                  ¿Qué necesitas?
                 </label>
-                <textarea
-                  id="mensaje"
-                  name="mensaje"
-                  rows={4}
+                <select
+                  ref={serviceRef}
+                  id="servicio"
+                  name="servicio"
                   required
-                  placeholder="Cuéntanos brevemente qué necesitas: qué equipo o máquina, cuántos son, si es urgente..."
-                  className="w-full resize-none rounded-xl border border-edge bg-white/[0.03] px-4 py-3 text-[15px] text-white placeholder:text-slate-500 outline-none transition-colors focus:border-cyan/60 focus:bg-white/[0.06]"
-                />
+                  defaultValue=""
+                  className="w-full appearance-none rounded-xl border border-edge bg-white/[0.03] px-4 py-3 text-[15px] text-white outline-none transition-colors focus:border-cyan/60 focus:bg-white/[0.06]"
+                >
+                  <option value="" className="bg-panel">
+                    Elige un área
+                  </option>
+                  {serviceOptions.map((opt) => (
+                    <option key={opt} value={opt} className="bg-panel">
+                      {opt}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <button
                 type="submit"
                 disabled={status === 'sending'}
-                className="btn-primary mt-2 w-full justify-center disabled:cursor-not-allowed disabled:opacity-70"
+                className="btn-primary mt-1 w-full justify-center disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {status === 'sending' ? (
                   <>
@@ -310,21 +236,25 @@ export function Contact() {
                 ) : hasEmailRoute ? (
                   <>
                     <Send className="h-[18px] w-[18px]" />
-                    Enviar mensaje
+                    Cotizar
                   </>
                 ) : (
                   <>
                     <WhatsappLogo className="h-[18px] w-[18px]" />
-                    Cotizar por WhatsApp
+                    Cotizar
                   </>
                 )}
               </button>
 
-              <p className="mt-3 flex items-start gap-2 text-[12px] leading-relaxed text-slate-500">
+              <p className="text-center text-[13px] leading-relaxed text-slate-500">
+                Sin registros ni llamadas. Te escribimos por WhatsApp con la cotización.
+              </p>
+
+              <p className="flex items-start gap-2 text-[12px] leading-relaxed text-slate-500">
                 <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0" />
                 {hasEmailRoute
                   ? 'Usamos tus datos solo para responderte. No los compartimos con terceros. Consulta el aviso de privacidad en el pie de página.'
-                  : 'Te llevamos al chat de WhatsApp en una pestaña nueva, con tu mensaje ya escrito. No mostramos nuestros números ni guardamos tu consulta en ningún servidor.'}
+                  : 'Te llevamos al chat de WhatsApp con tu mensaje ya escrito. No mostramos nuestros números ni guardamos tu consulta en ningún servidor.'}
               </p>
             </form>
           </motion.div>
