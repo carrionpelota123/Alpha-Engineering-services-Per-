@@ -7,7 +7,7 @@ export const business = {
   description:
     'Soporte técnico, redes, cámaras, sistemas a medida, ingeniería industrial y servicios generales para negocios y hogares.',
   whatsapp: '51956071379',
-  email: 'contacto@ejemplo.com',
+  email: 'alphaengineeringservicesperu@gmail.com',
   city: 'Piura',
   coverage: 'Todo Piura',
   mapQuery: 'Piura, Perú',
