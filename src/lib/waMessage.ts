@@ -84,8 +84,8 @@ export function buildWaQuickQuote(owner: string, servicio?: string): string {
   partes.push(
     '',
     servicio?.trim()
-      ? '_¿Me confirman disponibilidad y me pasan la cotización?_'
-      : '_¿Me pueden ayudar? Cuéntanos por este chat qué necesitas y te cotizamos._',
+      ? '_¿Me confirman disponibilidad y podríamos coordinar una cotización?_'
+      : '_Muchas gracias._',
   )
 
   return partes.join('\n')
