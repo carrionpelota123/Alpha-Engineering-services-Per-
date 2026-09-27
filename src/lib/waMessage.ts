@@ -66,3 +66,27 @@ export function buildWaMessage(c: Cotizacion, owner: string): string {
 
   return partes.join('\n')
 }
+
+/**
+ * Peticion directa desde un boton de la pagina, sin pasar por el formulario.
+ * Si el visitante ya habia elegido un servicio, se incluye; si no, se le abre el
+ * chat para que cuente su caso ahi mismo.
+ */
+export function buildWaQuickQuote(owner: string, servicio?: string): string {
+  const partes: string[] = [
+    `${saludoPorHora()}${saludoDestinatario(owner)} 👋`,
+    '',
+    `Solicito una cotización con *${business.name}*`,
+  ]
+
+  if (servicio?.trim()) partes.push(`• *Servicio:*  ${servicio.trim()}`)
+
+  partes.push(
+    '',
+    servicio?.trim()
+      ? '_¿Me confirman disponibilidad y me pasan la cotización?_'
+      : '_¿Me pueden ayudar? Cuéntanos por este chat qué necesitas y te cotizamos._',
+  )
+
+  return partes.join('\n')
+}

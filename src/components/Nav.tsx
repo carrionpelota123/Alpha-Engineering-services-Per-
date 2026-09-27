@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X, Send } from 'lucide-react'
-import { business } from '../config/business'
+import { business, startWaChat } from '../config/business'
+import { buildWaQuickQuote } from '../lib/waMessage'
 
 const links = [
   { href: '#servicios', label: 'Servicios' },
@@ -69,13 +70,14 @@ export function Nav() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <a
-            href="#contacto"
+          <button
+            type="button"
+            onClick={() => startWaChat((owner) => buildWaQuickQuote(owner))}
             className="hidden items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-emerald-400 hover:shadow-[0_0_28px_-6px_rgba(16,185,129,0.8)] sm:inline-flex"
           >
             <Send className="h-4 w-4" />
             Cotizar
-          </a>
+          </button>
 
           <button
             type="button"
@@ -111,14 +113,17 @@ export function Nav() {
                 </li>
               ))}
               <li className="pt-2 sm:hidden">
-                <a
-                  href="#contacto"
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-center gap-2 rounded-lg bg-emerald-500 px-4 py-3 text-sm font-semibold text-white"
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpen(false)
+                    startWaChat((owner) => buildWaQuickQuote(owner))
+                  }}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 px-4 py-3 text-sm font-semibold text-white"
                 >
                   <Send className="h-4 w-4" />
                   Cotizar ahora
-                </a>
+                </button>
               </li>
             </ul>
           </motion.div>

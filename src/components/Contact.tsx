@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { MapPin, Clock, Mail, Send, CheckCircle2, Loader2, MessageCircle, ShieldCheck } from 'lucide-react'
 import { business, startWaChat } from '../config/business'
 import { services, groupLabels } from '../data/services'
 import type { ServiceGroup } from '../data/services'
 import { WhatsappLogo } from './WhatsappLogo'
-import { SERVICE_PREFILL_EVENT } from '../lib/prefill'
 import { buildWaMessage } from '../lib/waMessage'
 
 /** Servicios agrupados, para el selector del formulario */
@@ -24,22 +23,10 @@ export function Contact() {
   const [status, setStatus] = useState<Status>('idle')
   const [error, setError] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
-  const serviceRef = useRef<HTMLSelectElement>(null)
   const hasEmailRoute = business.formspreeId.length > 0
 
   /** El sistema asigna el numero por orden y abre el chat en esta misma pestana. */
   const enviar = (f: Fields) => startWaChat((owner) => buildWaMessage(f, owner))
-
-  // Si una tarjeta de servicio pidio prellenar el formulario
-  useEffect(() => {
-    const onPrefill = (e: Event) => {
-      const titulo = (e as CustomEvent<string>).detail
-      if (serviceRef.current) serviceRef.current.value = titulo
-      setStatus('idle')
-    }
-    window.addEventListener(SERVICE_PREFILL_EVENT, onPrefill)
-    return () => window.removeEventListener(SERVICE_PREFILL_EVENT, onPrefill)
-  }, [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -205,7 +192,6 @@ export function Contact() {
                   ¿Qué necesitas?
                 </label>
                 <select
-                  ref={serviceRef}
                   id="servicio"
                   name="servicio"
                   required

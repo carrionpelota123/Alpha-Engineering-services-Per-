@@ -3,6 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { services, groupLabels, groupHints } from '../data/services'
 import type { ServiceGroup } from '../data/services'
 import { ServiceCard } from './ServiceCard'
+import { startWaChat } from '../config/business'
+import { buildWaQuickQuote } from '../lib/waMessage'
 import { groupTone } from '../lib/groupTone'
 import { fadeUp, fadeUpStagger } from '../lib/motion'
 
@@ -96,9 +98,13 @@ export function Services() {
 
         <p className="mt-8 text-center text-[13.5px] text-slate-500">
           ¿No ves lo que buscas?{' '}
-          <a href="#contacto" className="text-cyan underline-offset-4 hover:underline">
+          <button
+            type="button"
+            onClick={() => startWaChat((owner) => buildWaQuickQuote(owner))}
+            className="text-cyan underline-offset-4 hover:underline"
+          >
             Cuéntanos tu caso
-          </a>{' '}
+          </button>{' '}
           y lo cotizamos a medida.
         </p>
       </div>

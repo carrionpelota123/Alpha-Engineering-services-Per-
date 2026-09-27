@@ -2,9 +2,10 @@ import { useEffect, useId, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Plus, Check, Send } from 'lucide-react'
 import type { Service } from '../data/services'
+import { startWaChat } from '../config/business'
+import { buildWaQuickQuote } from '../lib/waMessage'
 import { ServiceGlyph } from './Glyphs'
 import { groupTone } from '../lib/groupTone'
-import { requestServicePrefill } from '../lib/prefill'
 
 type ServiceCardProps = {
   service: Service
@@ -106,10 +107,7 @@ export function ServiceCard({ service, open, onToggle }: ServiceCardProps) {
             <div className="px-6 pb-5">
               <button
                 type="button"
-                onClick={() => {
-                  requestServicePrefill(service.title)
-                  document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })
-                }}
+                onClick={() => startWaChat((owner) => buildWaQuickQuote(owner, service.title))}
                 className="btn-ghost w-full justify-center py-2.5 text-[13px]"
               >
                 <Send className="h-[15px] w-[15px]" />

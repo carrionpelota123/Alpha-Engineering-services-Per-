@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { MessageCircle, Send, ShieldCheck, Sparkles } from 'lucide-react'
-import { business } from '../config/business'
+import { MessageCircle, MessageSquare, ShieldCheck, Sparkles } from 'lucide-react'
+import { business, startWaChat } from '../config/business'
 import { Reveal } from '../lib/Reveal'
+import { buildWaQuickQuote } from '../lib/waMessage'
 
 const issues = [
   'tu computadora va lenta',
@@ -47,10 +48,14 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={0.24} className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a href="#contacto" className="btn-primary w-full sm:w-auto">
-              <Send className="h-[18px] w-[18px]" />
+            <button
+              type="button"
+              onClick={() => startWaChat((owner) => buildWaQuickQuote(owner))}
+              className="btn-primary w-full sm:w-auto"
+            >
+              <MessageSquare className="h-[18px] w-[18px]" />
               Cotizar ahora
-            </a>
+            </button>
             <a href="#servicios" className="btn-ghost w-full sm:w-auto">
               Ver servicios
             </a>
