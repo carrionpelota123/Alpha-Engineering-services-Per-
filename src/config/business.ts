@@ -76,21 +76,47 @@ export function nextWaNumber(): WaNumber {
   return elegido
 }
 
-/** Enlace de WhatsApp Web. Si no se pasa numero, usa el primero. */
+/**
+ * Enlace universal de WhatsApp. Abre la app si esta instalada y, si no, cae a
+ * la version web. Si no se pasa numero, usa el primero.
+ */
 export const waLink = (message: string, numero: WaNumber = primaryNumber) =>
-  `https://web.whatsapp.com/send?phone=${numero.digits}&text=${encodeURIComponent(message)}`
+  `https://wa.me/${numero.digits.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`
 
 /**
- * Abre el chat en una pestana nueva para que la web no se cierre.
- * Se llama directo desde el clic del visitante, que es lo que los
- * navegadores exigen para no bloquearla como ventana emergente.
+ * Esquema propio de la app. Es el unico que abre WhatsApp de verdad; los
+ * enlaces https siempre terminan en el navegador.
+ */
+const waAppLink = (message: string, numero: WaNumber) =>
+  `whatsapp://send?phone=${numero.digits.replace(/\D/g, '')}&text=${encodeURIComponent(message)}`
+
+/**
+ * Abre la app de WhatsApp con el mensaje ya escrito, en el celular y en la
+ * computadora. Primero intenta el esquema de la app; si en 2 segundos no se
+ * logro salir de la pagina, es que no hay app instalada y se cae al enlace
+ * universal en una pestana nueva, para no perder lo que el visitor ya escribio.
  */
 export const openWaChat = (message: string, numero: WaNumber) => {
-  const pestana = window.open(waLink(message, numero), '_blank', 'noopener,noreferrer')
-  // Si el navegador lo bloqueo, avisamos en vez de dejar que no pase nada
-  if (!pestana) {
-    window.alert('Permite las ventanas emergentes para abrir WhatsApp, o vuelve a presionar el botón.')
+  let salioDeLaPagina = false
+  const marcarSalida = () => {
+    salioDeLaPagina = true
   }
+
+  document.addEventListener('visibilitychange', marcarSalida, { once: true })
+  window.addEventListener('pagehide', marcarSalida, { once: true })
+
+  window.location.href = waAppLink(message, numero)
+
+  window.setTimeout(() => {
+    document.removeEventListener('visibilitychange', marcarSalida)
+    window.removeEventListener('pagehide', marcarSalida)
+    if (salioDeLaPagina || document.hidden) return
+
+    const pestana = window.open(waLink(message, numero), '_blank', 'noopener,noreferrer')
+    if (!pestana) {
+      window.location.href = waLink(message, numero)
+    }
+  }, 2000)
 }
 
 /**
