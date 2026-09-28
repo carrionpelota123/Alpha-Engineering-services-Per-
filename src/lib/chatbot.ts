@@ -1,5 +1,6 @@
 import { services, groupLabels } from '../data/services'
 import { business } from '../config/business'
+import { buscarSintoma, textoSintoma } from './diagnostico'
 
 export type BotCta = 'form' | 'wa'
 
@@ -272,6 +273,28 @@ const intents: Intent[] = [
     }),
   },
   {
+    id: 'falla_comun',
+    keywords: [
+      'tengo una falla',
+      'tengo un problema',
+      'tengo una averia',
+      'tengo un desperfecto',
+      'no se que hacer',
+      'que puedo hacer',
+      'que me recomiendas',
+      'falla comun',
+    ],
+    reply: () => ({
+      text: `Dime qué falla y te doy los pasos para revisarlo tú mismo antes de que vaya un técnico:\n\n• No puedo imprimir\n• El internet va lento o no conecta\n• Las cámaras no graban\n• La computadora va lenta o no prende\n• El sistema me da error\n• La máquina se para\n• Salta la luz o hay un enchufe quemado\n• Se mojó o se quemó un equipo`,
+      chips: [
+        'No puedo imprimir',
+        'Las cámaras no graban',
+        'Salta la luz',
+        'Ver servicios',
+      ],
+    }),
+  },
+  {
     id: 'gracias',
     keywords: ['gracias', 'genial', 'perfecto', 'excelente', 'buenisimo', 'okey', 'vale'],
     reply: () => ({
@@ -295,6 +318,7 @@ const menuInicio: BotReply = {
   chips: [
     '¿Qué servicios manejan?',
     '¿Cuánto cuesta?',
+    'Tengo una falla',
     'Zona de cobertura',
     'Horario',
     'Necesito soporte técnico',
@@ -302,23 +326,117 @@ const menuInicio: BotReply = {
   ],
 }
 
-const normalizadas = new Map<string, string[]>()
-for (const i of intents) normalizadas.set(i.id, i.keywords.map(norm))
+// Se normalizan al primer uso y se guardan, para no repetir el trabajo en
+// cada mensaje. Es perezoso a proposito: asi el orden en que se declaran los
+// arrays de intents no importa.
+const keywordsNormalizadas = new Map<string, string[]>()
+
+function normKeywords(intencion: Intent): string[] {
+  let listo = keywordsNormalizadas.get(intencion.id)
+  if (!listo) {
+    listo = intencion.keywords.map(norm)
+    keywordsNormalizadas.set(intencion.id, listo)
+  }
+  return listo
+}
 
 function puntuar(intencion: Intent, texto: string): number {
   let total = 0
   // Las palabras clave se normalizan igual que el mensaje, para que
   // "señaletica" y "señalética" sirvan las dos.
-  for (const k of normalizadas.get(intencion.id) ?? []) {
+  for (const k of normKeywords(intencion)) {
     if (!texto.includes(k)) continue
     total += k.includes(' ') ? 4 : Math.min(k.length, 4)
   }
   return total
 }
 
+/**
+ * Respuestas de escalamiento. Van aparte de los intents porque se revisan antes
+ * que los sintomas: si alguien ya dice "ya apagué y lo revisé", repetirle los
+ * pasos seria una falta de respeto.
+ */
+const escalamiento: Intent[] = [
+  {
+    id: 'pedir_tecnico',
+    keywords: [
+      'que venga un tecnico',
+      'quiero que venga un tecnico',
+      'que venga alguien',
+      'quiero que venga alguien',
+      'envia un tecnico',
+      'envie un tecnico',
+      'llama a un tecnico',
+      'quiero que lo revisen',
+      'revisen el equipo',
+      'que lo reparen',
+      'quiero que lo reparen',
+    ],
+    reply: () => ({
+      text: `Perfecto. Cuéntale al técnico qué equipo es y qué le pasa, con eso llega sabiendo qué llevar.\n\nEscríbenos por WhatsApp y te lo coordinamos. Atendemos *${business.hours}* en *${business.coverage}*.`,
+      chips: ['Zona de cobertura', '¿Cuánto cuesta?'],
+      cta: 'wa',
+    }),
+  },
+  {
+    id: 'ya_revisado',
+    keywords: [
+      'ya intente',
+      'ya intente apagar',
+      'ya la apague',
+      'ya lo apague',
+      'ya apague y prendi',
+      'ya revise el cable',
+      'ya revise los cables',
+      'ya revise',
+      'ya probamos',
+      'ya lo hice',
+      'ya le hice',
+      'ya hice eso',
+      'ya hice todo eso',
+      'ya hice todo',
+      'no funciono',
+      'no funcionó',
+      'sigue igual',
+      'sigue igual de',
+      'sigue sin',
+      'no sirvio',
+      'no sirvió',
+      'no me sirvio',
+      'ya no funciona',
+      'ya no prende',
+    ],
+    reply: () => ({
+      text: `Si ya revisaste eso y sigue igual, se acabó lo que se podía hacer a distancia: **hace falta que un técnico lo vea**. Cada intento remoto ya no te va a quitar el problema.\n\nEscríbenos y lo coordinamos. Si la falla es urgente y estás en ${business.coverage}, márcalo en el mensaje y lo priorizamos.`,
+      chips: ['Ver servicios', 'Zona de cobertura'],
+      cta: 'wa',
+    }),
+  },
+]
+
 export function responder(mensaje: string, menuAbierto: boolean): BotReply {
   const texto = norm(mensaje)
   if (!texto) return menuInicio
+
+  // 1. Escalamiento: "ya lo hice" y "que venga alguien" se ganan todo.
+  for (const e of escalamiento) {
+    if (puntuar(e, texto) >= 4) return e.reply()
+  }
+
+  // 2. Sintomas: si describe una falla, primero el diagnostico y despues la
+  //    ficha comercial. Sin esto, "no puedo imprimir" caia en el catalogo.
+  const sintoma = buscarSintoma(texto, norm)
+  if (sintoma) {
+    return {
+      text: textoSintoma(sintoma),
+      chips: [
+        'Ya hice eso y no funcionó',
+        'Que venga un técnico',
+        '¿Cuánto cuesta?',
+      ],
+      cta: 'wa',
+    }
+  }
 
   let mejor: Intent | null = null
   let mejorPuntaje = 0
